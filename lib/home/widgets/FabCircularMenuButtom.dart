@@ -13,23 +13,15 @@ class FabCircularMenuButtom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const widthAndSize = 75.0;
     return InkWell(
       child: Ink(
-        width: 75,
-        height: 75,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: Icon(icon),
-            ),
-            Text(
-              label,
-              textAlign: TextAlign.center,
-            )
-          ],
-        ),
+        width: widthAndSize,
+        height: widthAndSize,
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Padding(padding: const EdgeInsets.all(5), child: Icon(icon)),
+          Text(label, textAlign: TextAlign.center)
+        ]),
       ),
       onTap: onTap,
       borderRadius: BorderRadius.circular(100),

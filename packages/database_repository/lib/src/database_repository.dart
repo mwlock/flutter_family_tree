@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart' as firestore;
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:database_repository/src/models/models.dart' as dataBaseModels;
 import 'package:authentication_repository/src/models/models.dart' as AuthModel;
 import 'package:meta/meta.dart';
 
@@ -35,6 +36,27 @@ class DataBaseRepository {
   firestore.FirebaseFirestore _firestoreDatabase;
   AuthenticationRepository _authenticationRepository;
 
+  /// Stream of [FamilyTree] which will emit the current family tree when
+  /// the database is changed.
+  ///
+  /// Emits [dataBaseModels.FamilyTree.empty] if the family tree does not exist.
+  Stream<dataBaseModels.FamilyTree> get familyTree {
+    return _firestoreDatabase
+        .collection('family_trees')
+        .doc('test')
+        .snapshots()
+        .map((query) {
+      print("QUUUUUUUUUUUUUUEEEEEEEEERRRRRRRRTTTTTTTTTTTTY");
+      return query == null
+          ? dataBaseModels.FamilyTree(id: '', people: null)
+          : query.toFamilyTree;
+    });
+
+    // return _firebaseAuth.authStateChanges().map((firebaseUser) {
+    //   return firebaseUser == null ? User.empty : firebaseUser.toUser;
+    // });
+  }
+
   /// Insets a new user into FireStore using information provided by the authentification package.
   ///
   /// Throws an [InsertFailure] if an exception occurs.
@@ -43,7 +65,6 @@ class DataBaseRepository {
     assert(user != AuthModel.User.empty);
     assert(user != null);
     try {
-      print('====================Adding to database=====================');
       final users = _firestoreDatabase.collection('users');
       await users.doc(uid).set({
         'username': user.name,
@@ -53,5 +74,13 @@ class DataBaseRepository {
     } on Exception {
       throw InsertFailure();
     }
+  }
+}
+
+extension on firestore.DocumentSnapshot {
+  dataBaseModels.FamilyTree get toFamilyTree {
+    print("==========FAMILY TREE============");
+    print(data());
+    return dataBaseModels.FamilyTree.empty;
   }
 }
