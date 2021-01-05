@@ -1,0 +1,17 @@
+name: family_tree_repository
+description: Dart package which manages the main models and logic of the family tree application.
+version: 1.0.0
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  equatable: ^1.2.5
+  meta: ^1.2.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mockito: ^4.1.3
